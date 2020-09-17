@@ -47,7 +47,7 @@ array[3] = 100
 array.pop(2)
 
 # remove value by value name (first matching item is removed)
-array.remove(7)
+array.remove(33)
 
 # remove with del statement (can remove ranges of values) ex: del array[2:5]
 del array[0]

@@ -1,5 +1,4 @@
 """
-
 - Array Data Type -
 
 Positives:
@@ -23,11 +22,10 @@ Operations:
 - insert(value, index) O(N) we have to shift all the items first
 - removeLast() O(1) remove last item
 - remove(value) O(N) have to shift all items after removal
-
 """
 
 # basic array construction
-array = [10, 3, 7, 5]
+array = [10, 3, 7, 5, 6, 33]
 
 # random indexing: indexing starts with 0
 print(array[2])
@@ -43,6 +41,16 @@ print(array[:-1])
 
 # update a value
 array[3] = 100
+
+# remove value by index (returns value)
+# if no index is given, it will remove the last item
+array.pop(2)
+
+# remove value by value name (first matching item is removed)
+array.remove(7)
+
+# remove with del statement (can remove ranges of values) ex: del array[2:5]
+del array[0]
 
 # linear search O(N) (finding max item)
 maximum = array[0]

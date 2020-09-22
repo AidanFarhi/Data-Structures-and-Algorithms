@@ -13,6 +13,7 @@ class LinkedList {
     insertStart(data) {
         this.size++
         let newNode = new Node(data)
+
         if (this.head === null) {
             this.head = newNode
         } else {
@@ -23,20 +24,44 @@ class LinkedList {
     insertEnd(data) {
         this.size++
         let newNode = new Node(data)
-        let searchNode = this.head
-        while (searchNode.nextNode !== null) {
-            searchNode = searchNode.nextNode
+        let accessNode = this.head
+
+        while (accessNode.nextNode !== null) {
+            accessNode = accessNode.nextNode
         }
-        searchNode.nextNode = newNode
+        accessNode.nextNode = newNode
+    }
+    remove(data) {
+        if (this.head === null) return
+
+        let accessNode = this.head
+        let previousNode = null
+
+        while (accessNode !== null && accessNode.data !== data) {
+            previousNode = accessNode
+            accessNode = previousNode.nextNode
+        }
+
+        if (accessNode === null) {
+            return
+        } else {
+            this.size++
+            if (previousNode === null) {
+                this.head = accessNode.nextNode
+            } else {
+                previousNode.nextNode = accessNode.nextNode
+            }
+        }
     }
     getSize() {
         return this.size
     }
     printNodes() {
-        let searchNode = this.head
-        while (searchNode !== null) {
-            console.log(searchNode.data)
-            searchNode = searchNode.nextNode
+        let accessNode = this.head
+
+        while (accessNode !== null) {
+            console.log(accessNode.data)
+            accessNode = accessNode.nextNode
         }
     }
 }

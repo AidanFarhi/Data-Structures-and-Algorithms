@@ -19,6 +19,11 @@ Applications
 - It keeps track of the point to which each active subroutine should
   return control when it finishes executing
 - Stores temporary variables created by each function
+
+Operations:
+- push() O(1)
+- pop() O(1)
+- peek() O(1)
 """
 
 class Stack:

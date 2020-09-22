@@ -15,7 +15,7 @@ Negatives:
   have sequential access.
 - Difficulties arise in linked lists when it comes to reverse traversing.
   Singly linked lists are extremely difficult to navigate backwards.
-- Doubly linked lists sacrifice memory for the ability to navigate backwards.
+- Doubly linked lists sacrifice by using extra memory for the ability to navigate backwards.
 
 Applications:
 - Stacks
@@ -27,8 +27,6 @@ Operations:
 - removeStart() O(1)
 - removeItem(value) O(N)
 """
-
-# First implementation
 
 
 class Node:
@@ -55,23 +53,50 @@ class LinkedList:
             self.head = new_node
 
     # O(N)
+    def remove(self, data):
+        if self.head is None:
+            return
+
+        access_node = self.head
+        previous_node = None
+
+        while access_node is not None and access_node.data != data:
+            previous_node = access_node
+            access_node = access_node.nextNode
+
+        # data does not exist - end of list reached
+        if access_node is None:
+            return
+        
+        self.numOfNodes -= 1
+        # if data found, this his how we remove - set prev node reference to access_node.nextNode
+        if previous_node is None:
+            self.head = access_node.nextNode
+        else:
+            previous_node.nextNode = access_node.nextNode
+
+    # O(N)
     def insert_end(self, data):
         self.numOfNodes += 1
         new_node = Node(data)
+        access_node = self.head
 
-        actual_node = self.head
+        if not self.head:
+            self.head = new_node
+        else:
+            while access_node.nextNode is not None:
+                access_node = access_node.nextNode
 
-        while actual_node.nextNode is not None:
-            actual_node = actual_node.nextNode
+            access_node.nextNode = new_node
 
-        actual_node.nextNode = new_node
-
+    # O(N)
     def size_of_list(self):
         return self.numOfNodes
 
+    # O(N)
     def print_data(self):
-        actual_node = self.head
+        access_node = self.head
 
-        while actual_node is not None:
-            print(actual_node.data)
-            actual_node = actual_node.nextNode
+        while access_node is not None:
+            print(access_node.data)
+            access_node = access_node.nextNode

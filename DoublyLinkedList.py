@@ -66,7 +66,8 @@ class DoublyLinkedList:
     # O(N)
     def insert_before(self, given_data, data):
         if self.head is None:
-            return 'List is empty'
+            print('List empty')
+            return
         else:
             self.size += 1
             access_node = self.head
@@ -75,7 +76,8 @@ class DoublyLinkedList:
                     break
                 access_node = access_node.next_node
             if access_node is None:
-                return 'Node not found'
+                print('Node not found')
+                return
             else:
                 new_node = Node(data)
                 # if access node is not head
@@ -92,7 +94,8 @@ class DoublyLinkedList:
     # O(N)
     def insert_after(self, given_data, data):
         if self.head is None:
-            return 'List is empty'
+            print('List empty')
+            return
         else:
             self.size += 1
             access_node = self.head
@@ -101,7 +104,8 @@ class DoublyLinkedList:
                     break
                 access_node = access_node.next_node
             if access_node is None:
-                return 'Node not found'
+                print('Node not found')
+                return
             else:
                 new_node = Node(data)
                 new_node.previous_node = access_node
@@ -112,7 +116,8 @@ class DoublyLinkedList:
 
     def traverse(self):
         if self.size == 0:
-            return 'list empty'
+            print('List empty')
+            return
         else:
             access_node = self.head
             while access_node is not None:
@@ -123,6 +128,7 @@ class DoublyLinkedList:
     def remove_start(self):
         if self.head is None:
             print("The list has no element to delete")
+            return
         elif self.head.next_node is None:
             self.head = None
         else:
@@ -133,6 +139,7 @@ class DoublyLinkedList:
     def remove_end(self):
         if self.head is None:
             print('List empty')
+            return
         elif self.head.next_node is None:
             self.head = None
         else:
@@ -149,7 +156,8 @@ class DoublyLinkedList:
             if self.head.data == data:
                 self.head = None
             else:
-                return 'Value not found'
+                print('Value not found')
+                return
         # case: more than one element, and element to delete is at the head
         elif self.head.data == data:
             self.head = self.head.next_node
@@ -169,4 +177,5 @@ class DoublyLinkedList:
                 if access_node.data == data:
                     access_node.previous_node.next_node = None
                 else:
-                    return 'Not found'
+                    print('Value not found')
+                    return

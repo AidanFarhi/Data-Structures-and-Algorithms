@@ -78,11 +78,16 @@ class DoublyLinkedList:
                 return 'Node not found'
             else:
                 new_node = Node(data)
-                new_node.next_node = access_node
-                new_node.previous_node = access_node.previous_node
+                # if access node is not head
                 if access_node.previous_node is not None:
+                    new_node.next_node = access_node
                     access_node.previous_node.next_node = new_node
-                access_node.previous_node = new_node
+                    new_node.previous_node = access_node.previous_node
+                    access_node.previous_node = new_node
+                else:
+                    new_node.next_node = self.head
+                    self.head.previous_node = new_node
+                    self.head = new_node
 
     # O(N)
     def insert_after(self, given_data, data):

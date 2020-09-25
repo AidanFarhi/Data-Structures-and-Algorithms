@@ -63,7 +63,7 @@ class BST:
     def remove(self, data):
         if self.root is None:
             return
-        elif self.root.left is None and self.root.right is None:
+        elif self.root.left is None and self.root.right is None and self.root.data == data:
             self.root = None
         else:
             self.remove_helper(self.root, data)

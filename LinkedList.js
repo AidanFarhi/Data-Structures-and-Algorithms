@@ -45,7 +45,7 @@ class LinkedList {
         if (accessNode === null) {
             return
         } else {
-            this.size++
+            this.size--
             if (previousNode === null) {
                 this.head = accessNode.nextNode
             } else {

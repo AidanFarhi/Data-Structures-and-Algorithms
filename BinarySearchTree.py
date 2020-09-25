@@ -31,16 +31,14 @@ Operations
 
 
 class Node:
-
     def __init__(self, data, parent):
         self.data = data
-        self.leftChild = None
-        self.rightChild = None
+        self.left = None
+        self.right = None
         self.parent = parent
 
 
-class BinarySearchTree:
-
+class BST:
     def __init__(self):
         self.root = None
 
@@ -48,136 +46,128 @@ class BinarySearchTree:
         if self.root is None:
             self.root = Node(data, None)
         else:
-            self.insert_node(data, self.root)
+            self.insert_helper(self.root, data)
 
-    # O(logN) BUT if the tree is balances (left subtree contains app. same amount of item then right subtree)
-    def insert_node(self, data, node):
-
-        # we have to go to the left subtree
-        if data < node.data:
-            if node.leftChild:
-                self.insert_node(data, node.leftChild)
+    def insert_helper(self, node, data):
+        if node.data > data:
+            if node.left is not None:
+                self.insert_helper(node.left, data)
             else:
-                node.leftChild = Node(data, node)
-        # we have to visit the right subtree
+                node.left = Node(data, node)
         else:
-            if node.rightChild:
-                self.insert_node(data, node.rightChild)
+            if node.right is not None:
+                self.insert_helper(node.right, data)
             else:
-                node.rightChild = Node(data, node)
+                node.right = Node(data, node)
 
-    def remove_node(self, data, node):
+    def remove(self, data):
+        if self.root is None:
+            return
+        elif self.root.left is None and self.root.right is None:
+            self.root = None
+        else:
+            self.remove_helper(self.root, data)
 
+    def remove_helper(self, node, data):
         if node is None:
             return
-
-        if data < node.data:
-            self.remove_node(data, node.leftChild)
-        elif data > node.data:
-            self.remove_node(data, node.rightChild)
+        elif node.data > data:
+            self.remove_helper(node.left, data)
+        elif node.data < data:
+            self.remove_helper(node.right, data)
         else:
-
-            if node.leftChild is None and node.rightChild is None:
-                print("Removing a leaf node...%d" % node.data)
-
-                parent = node.parent
-
-                if parent is not None and parent.leftChild == node:
-                    parent.leftChild = None
-                if parent is not None and parent.rightChild == node:
-                    parent.rightChild = None
-
-                if parent is None:
-                    self.root = None
-
-                del node
-
-            elif node.leftChild is None and node.rightChild is not None:  # node !!!
-                print("Removing a node with single right child...")
-
-                parent = node.parent
-
-                if parent is not None:
-                    if parent.leftChild == node:
-                        parent.leftChild = node.rightChild
-                    if parent.rightChild == node:
-                        parent.rightChild = node.rightChild
+            if node.left is None and node.right is None:  # Node has no children
+                if node.parent.left == node:
+                    node.parent.left = None
+                    del node
                 else:
-                    self.root = node.rightChild
-
-                node.rightChild.parent = parent
-                del node
-
-            elif node.rightChild is None and node.leftChild is not None:
-                print("Removing a node with single left child...")
-
-                parent = node.parent
-
-                if parent is not None:
-                    if parent.leftChild == node:
-                        parent.leftChild = node.leftChild
-                    if parent.rightChild == node:
-                        parent.rightChild = node.leftChild
-                else:
-                    self.root = node.leftChild
-
-                node.leftChild.parent = parent
-                del node
-
-            else:
-                print('Removing node with two children....')
-
-                predecessor = self.get_predecessor(node.leftChild)
-
+                    node.parent.right = None
+                    del node
+            elif node.left is None and node.right is not None:  # Node has one right child
+                if node.parent.left == node:  # Current node is a left child
+                    node.parent.left = node.right
+                    node.right.parent = node.parent
+                    del node
+                else:  # current node is a right child
+                    node.parent.right = node.right
+                    node.right.parent = node.parent
+                    del node
+            elif node.left is not None and node.right is None:  # Node has one left child
+                if node.parent.left == node:  # Current node is a left child
+                    node.parent.left = node.left
+                    node.left.parent = node.parent
+                    del node
+                else:  # Current node is a right child
+                    node.parent.right = node.left
+                    node.left.parent = node.parent
+                    del node
+            else:  # Node has two children
+                # predecessor will be the largest node in the left sub-tree of Node to delete
+                predecessor = self.get_predecessor(node.left)
                 temp = predecessor.data
                 predecessor.data = node.data
                 node.data = temp
-
-                self.remove_node(data, predecessor)
+                self.remove_helper(predecessor, data)
 
     def get_predecessor(self, node):
-        if node.rightChild:
-            return self.get_predecessor(node.rightChild)
-
+        if node.right:
+            return self.get_predecessor(node.right)
         return node
-
-    def remove(self, data):
-        if self.root is not None:
-            self.remove_node(data, self.root)
 
     def traverse(self):
         if self.root is not None:
             self.traverse_in_order(self.root)
 
-    def get_max_value(self):
-        if self.root:
-            return self.get_max(self.root)
-
-    def get_max(self, node):
-
-        actual = self.root
-
-        while actual.rightChild is not None:
-            actual = actual.rightChild
-
-        return actual.data
-
-    def get_min_value(self):
-        if self.root:
-            return self.get_min(self.root)
-
-    def get_min(self, node):
-        if node.leftChild:
-            return self.get_min(node.leftChild)
-
-        return node.data
-
+    # left subtree, root node, right subtree
     def traverse_in_order(self, node):
-
-        if node.leftChild:
-            self.traverse_in_order(node.leftChild)
-
+        if node.left:
+            self.traverse_in_order(node.left)
         print('%s' % node.data)
+        if node.right:
+            self.traverse_in_order(node.right)
 
-        if node.rightChild:
-            self.traverse_in_order(node.rightChild)
+    def get_max(self):
+        if self.root is None:
+            return
+        elif self.root.right is None:
+            return self.root.data
+        else:
+            return self.get_max_helper(self.root)
+
+    def get_max_helper(self, node):
+        if node.right is None:
+            return node.data
+        else:
+            return self.get_max_helper(node.right)
+
+    def get_min(self):
+        if self.root is None:
+            return
+        elif self.root.left is None:
+            return self.root.data
+        else:
+            return self.get_min_helper(self.root)
+
+    def get_min_helper(self, node):
+        if node.left is None:
+            return node.data
+        else:
+            return self.get_min_helper(node.left)
+
+    def has_value(self, value):
+        if self.root is None:
+            return False
+        elif self.root.data == value:
+            return True
+        else:
+            return self.has_value_helper(self.root, value)
+
+    def has_value_helper(self, node, value):
+        if node.data == value:
+            return True
+        elif node.data > value and node.left is not None:
+            return self.has_value_helper(node.left, value)
+        elif node.data < value and node.right is not None:
+            return self.has_value_helper(node.right, value)
+        else:
+            return False

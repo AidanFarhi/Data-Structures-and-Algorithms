@@ -100,3 +100,14 @@ class LinkedList:
         while access_node is not None:
             print(access_node.data)
             access_node = access_node.nextNode
+    
+    # O(N)
+    def reverse(self):
+        n = self.head
+        p = None
+        while n:
+            next_n = n.next
+            n.next = p
+            p = n
+            n = next_n
+        self.head = p

@@ -12,14 +12,14 @@ target = 9
 # O(N ** 2) Time, 
 # O(1) Space
 
-def two_sum(arr, targ):
+def two_sum_brute_force(arr, targ):
   for i in range(len(arr)):
     for j in range(i + 1, len(arr)):
       if arr[i] + arr[j] == targ:
         return [i, j]
 
 
-print('Brute force:', two_sum(test, target))
+print('Brute force:', two_sum_brute_force(test, target))
 
 # Approach with hash map two passes 
 # O(N) Time 
@@ -33,8 +33,6 @@ def two_sum_two_pass(arr, target):
     comp = target - arr[i]
     if comp in mp:
       return [i, mp[comp]]
-  return []
-
 
 print('Two pass hashmap:', two_sum_two_pass(test, target))
 

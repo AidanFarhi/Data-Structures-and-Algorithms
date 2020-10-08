@@ -10,7 +10,7 @@ function fibRecurse(n) {
 const fibTest = fibRecurse(8)
 console.log(fibTest)
 
-// 2. Memoization solution
+// 2. Memoization solution O(n)
 function fibMem(n) {
     const memo = Array(n + 1).fill(null)
     return fibMemHelper(n, memo)

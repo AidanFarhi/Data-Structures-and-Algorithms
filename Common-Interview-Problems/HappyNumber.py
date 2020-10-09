@@ -17,6 +17,8 @@ Explanation:
 82 + 22 = 68
 62 + 82 = 100
 12 + 02 + 02 = 1
+
+First Few Happy Numbers: 1, 7, 10, 13, 19, 23, 28, 31, 32, 44
 """
 
 # Maintain a dict with seen values. 
@@ -24,18 +26,15 @@ Explanation:
 # it will pop up again in the loop.
 
 def happy_number(n):
-    seen = {}
-    prev = 0
-    while True:
-        last = n
-        st = n(st)
-        squared = 0
-        for i in st:
-            squared += int(i) ** 2
-        if squared == 1:
-            return True
-        elif squared in seen:
-            return False
-        else:
-            seen[last] = last
-            n = squared
+  seen = {}
+  while True:
+    n = str(n)
+    squared = 0
+    for i in n:
+      squared += int(i) ** 2
+    if squared == 1:
+      return True
+    if squared in seen:
+      return False
+    seen[squared] = squared 
+    n = squared

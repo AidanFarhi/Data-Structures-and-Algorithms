@@ -82,6 +82,7 @@ class RedBlackTree:
                 if uncle and uncle.color == Color.RED:  # Case 1 and case 4
                     g_parent.color = Color.RED
                     parent.color = Color.BLACK
+                    uncle.color = Color.BLACK
                     node = g_parent
                 else:  # Case 2: black uncle
                     if node == parent.left:  # node is a left child
@@ -229,3 +230,11 @@ class RedBlackTree:
         while node.left is not None:
             node = node.left
         return node.data
+
+
+rbt = RedBlackTree()
+test_array = [1,2,3,4,5,6,7,8,9,-1,-2,-3,-4,-5,-6,-7,-8,-9]
+for i in test_array:
+    rbt.insert(i)
+
+rbt.traverse()

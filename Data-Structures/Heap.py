@@ -21,84 +21,60 @@ Applications:
 - Dijkstra's algorithm, Prims algorithm
 """
 
-# Max number of items that can be stored in heap
-CAPACITY = 10
-
-
-class Heap:
-    def __init__(self):
-        # Create an array of CAPACITY length
-        self.heap = [0] * CAPACITY
-        # Keep track of heap size
+class MaxHeap:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.heap = [None] * capacity
         self.size = 0
 
-    # Insertion takes O(1) running time, BUT we have to make sure that
-    # the heap properties are no violated: fix_up() takes O(logN)
+    def swap(self, i, j):
+        self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
+
     def insert(self, item):
-        # We cannot insert items if capacity is at limit
-        if CAPACITY == self.size:
+        if self.size == self.capacity:
             return
-        # Insert item and then increment the counter
         self.heap[self.size] = item
         self.size += 1
-        # Now we check if heap properties have been violated
-        # starting at last item inserted
         self.fix_up(self.size - 1)
 
-    # Running time: O(logN)
     def fix_up(self, index):
-        parent_index = (index - 1) // 2
-        if index > 0 and self.heap[index] > self.heap[parent_index]:
-            self.swap(index, parent_index)
-            self.fix_up(parent_index)
+        p_index = (index - 1) // 2
+        if index > 0 and self.heap[index] > self.heap[p_index]:
+            self.swap(index, p_index)
+            self.fix_up(p_index)
 
-    def swap(self, index1, index2):
-        self.heap[index2], self.heap[index1] = self.heap[index1], self.heap[index2]
-
-    # Assuming we are using a max heap O(1)
-    def get_max(self):
-        return self.heap[0]
-
-    # Return and remove max item. O(logN)
     def poll(self):
-        maximum = self.get_max()
+        data = self.heap[0]
         self.swap(0, self.size - 1)
         self.size -= 1
         self.fix_down(0)
-        return maximum
+        return data
 
     def fix_down(self, index):
-        # To get the left child
-        left_index = index * 2 + 1
-        # To get the right child
-        right_index = index * 2 + 2
-        # Set largest index
-        largest_index = index
-        # If the left child is greater than the parent: largest is the left node
-        if left_index < self.size and self.heap[left_index] > self.heap[index]:
-            largest_index = left_index
-        # If the right child is greater than the left child: largest is the right node
-        if right_index < self.size and self.heap[right_index] > self.heap[largest_index]:
-            largest_index = right_index
-        # We don't swap items with themselves
-        if index != largest_index:
-            self.swap(index, largest_index)
-            self.fix_down(largest_index)
+        l_index = index * 2 + 1
+        r_index = index * 2 + 2
+        max_index = index
+        if l_index < self.size and self.heap[l_index] > self.heap[max_index]:
+            max_index = l_index
+            self.fix_down(l_index)
+        if r_index < self.size and self.heap[r_index] > self.heap[max_index]:
+            max_index = r_index
+        if max_index != index:
+            self.swap(index, max_index)
+            self.fix_down(max_index)
 
-    # Given N items and we want to sort them with a heap:
-    # every poll() takes O(logN)
-    # for loop will take O(N)
-    # Overall running time is O(NlogN)
     def heap_sort(self):
-        size = self.size
-        for i in range(0, size):
-            maximum = self.poll()
-            print(maximum)
+        for i in range(self.size):
+            self.poll()
 
 
-heap = Heap()
-array = [10, 8, 12, 20, -2, 0, 1, 321]
+CAPACITY = 10
+heap = MaxHeap(CAPACITY)
+array = [10, 8, 12, 20, -2, 0, 1, 321, 44, 55]
 for num in array:
     heap.insert(num)
 
+print(heap.heap)
 heap.heap_sort()
+print('after sort')
+print(heap.heap)

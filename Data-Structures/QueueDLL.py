@@ -1,4 +1,5 @@
 # A Queue implemented with a Doubly Linked List
+# All operations take O(1) time
 
 class Node:
     def __init__(self, data):

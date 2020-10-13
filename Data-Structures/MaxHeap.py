@@ -56,7 +56,6 @@ class MaxHeap:
         max_index = index
         if l_index < self.size and self.heap[l_index] > self.heap[max_index]:
             max_index = l_index
-            self.fix_down(l_index)
         if r_index < self.size and self.heap[r_index] > self.heap[max_index]:
             max_index = r_index
         if max_index != index:
@@ -74,7 +73,7 @@ array = [10, 8, 12, 20, -2, 0, 1, 321, 44, 55]
 for num in array:
     heap.insert(num)
 
-print(heap.heap)
 heap.heap_sort()
 print('after sort')
 print(heap.heap)
+print(heap.size)

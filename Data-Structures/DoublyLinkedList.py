@@ -28,154 +28,110 @@ Operations:
 class Node:
     def __init__(self, data):
         self.data = data
-        self.previous_node = None
-        self.next_node = None
+        self.next = None
+        self.prev = None
 
 
-class DoublyLinkedList:
+class DLL:
     def __init__(self):
         self.head = None
-        self.size = 0
+        self.tail = None
 
-    # O(1)
     def insert_start(self, data):
-        self.size += 1
-        new_node = Node(data)
-
-        if self.head is None:
+        if self.head:
+            new_node = Node(data)
+            new_node.next = self.head
+            self.head.prev = new_node
             self.head = new_node
         else:
-            new_node.next_node = self.head
-            self.head.previous_node = new_node
+            new_node = Node(data)
             self.head = new_node
+            self.tail = new_node
 
-    # O(N)
-    def insert_end(self, data):
-        self.size += 1
-        new_node = Node(data)
-
-        if self.head is None:
-            self.head = new_node
-        else:
-            access_node = self.head
-            while access_node.next_node is not None:
-                access_node = access_node.next_node
-            access_node.next_node = new_node
-            new_node.previous_node = access_node
-
-    # O(N)
-    def insert_before(self, given_data, data):
-        if self.head is None:
-            print('List empty')
-            return
-        else:
-            self.size += 1
-            access_node = self.head
-            while access_node is not None:
-                if access_node.data == given_data:
-                    break
-                access_node = access_node.next_node
-            if access_node is None:
-                print('Node not found')
-                return
-            else:
-                new_node = Node(data)
-                # if access node is not head
-                if access_node.previous_node is not None:
-                    new_node.next_node = access_node
-                    access_node.previous_node.next_node = new_node
-                    new_node.previous_node = access_node.previous_node
-                    access_node.previous_node = new_node
-                else:
-                    new_node.next_node = self.head
-                    self.head.previous_node = new_node
-                    self.head = new_node
-
-    # O(N)
-    def insert_after(self, given_data, data):
-        if self.head is None:
-            print('List empty')
-            return
-        else:
-            self.size += 1
-            access_node = self.head
-            while access_node is not None:
-                if access_node.data == given_data:
-                    break
-                access_node = access_node.next_node
-            if access_node is None:
-                print('Node not found')
-                return
-            else:
-                new_node = Node(data)
-                new_node.previous_node = access_node
-                new_node.next_node = access_node.next_node
-                if access_node.next_node is not None:
-                    access_node.next_node.previous_node = new_node
-                access_node.next_node = new_node
-
-    def traverse(self):
-        if self.size == 0:
-            print('List empty')
-            return
-        else:
-            access_node = self.head
-            while access_node is not None:
-                print(access_node.data)
-                access_node = access_node.next_node
-
-    # O(1)
     def remove_start(self):
-        if self.head is None:
-            print("The list has no element to delete")
-            return
-        elif self.head.next_node is None:
-            self.head = None
-        else:
-            self.head = self.head.next_node
-            self.head.previous_node = None
-
-    # O(N)
-    def remove_end(self):
-        if self.head is None:
-            print('List empty')
-            return
-        elif self.head.next_node is None:
-            self.head = None
-        else:
-            access_node = self.head
-            while access_node.next_node is not None:
-                access_node = access_node.next_node
-            access_node.previous_node.next_node = None
-
-    def remove(self, data):
-        if self.head is None:
-            return 'List empty'
-        # case: only one element in list
-        elif self.head.next_node is None:
-            if self.head.data == data:
+        if self.head:
+            data = self.head.data
+            if self.head.next:
+                self.head.next.prev = None
+                self.head = self.head.next
+            else:
                 self.head = None
-            else:
-                print('Value not found')
-                return
-        # case: more than one element, and element to delete is at the head
-        elif self.head.data == data:
-            self.head = self.head.next_node
-            self.head.previous_node = None
+            return data
+
+    def insert_end(self, data):
+        if self.tail:
+            new_node = Node(data)
+            self.tail.next = new_node
+            new_node.prev = self.tail
+            self.tail = new_node
         else:
-            access_node = self.head
-            # traverse until data is found or end of list is reached
-            while access_node.next_node is not None:
-                if access_node.data == data:
-                    break
-                access_node = access_node.next_node
-            # if node to delete is not the last node
-            if access_node.next_node is not None:
-                access_node.next_node.previous_node = access_node.previous_node
-                access_node.previous_node.next_node = access_node.next_node
+            self.insert_start(data)
+
+    def remove_end(self):
+        if self.tail:
+            data = self.tail.data
+            if self.tail.prev:
+                self.tail.prev.next = None
+                self.tail = self.tail.prev
             else:
-                if access_node.data == data:
-                    access_node.previous_node.next_node = None
-                else:
-                    print('Value not found')
+                self.head = None
+                self.tail = None
+            return data
+
+    def insert_before(self, node_data, insert_data):
+        if self.head.data == node_data:
+            self.insert_start(insert_data)
+        else:
+            node = self.head
+            while node:
+                if node.data == node_data:
+                    new_node = Node(insert_data)
+                    node.prev.next = new_node
+                    new_node.prev = node.prev
+                    node.prev = new_node
+                    new_node.next = node
                     return
+                node = node.next
+
+    def insert_after(self, node_data, insert_data):
+        if self.tail.data == node_data:
+            self.insert_end(insert_data)
+        else:
+            node = self.head
+            while node:
+                if node.data == node_data:
+                    new_node = Node(insert_data)
+                    node.next.prev = new_node
+                    new_node.next = node.next
+                    new_node.prev = node
+                    node.next = new_node
+                    return
+                node = node.next
+
+    def remove(self, val):
+        if self.head.data == val:
+            self.remove_start()
+        elif self.tail.data == val:
+            self.remove_end()
+        else:
+            node = self.head
+            while node:
+                if node.data == val:
+                    node.prev.next = node.next
+                    node.next.prev = node.prev
+                    return
+                node = node.next
+
+    def traverse_backwards(self):
+        if self.tail:
+            node = self.tail
+            while node:
+                print(node.data)
+                node = node.prev
+
+    def traverse_forwards(self):
+        if self.head:
+            node = self.head
+            while node:
+                print(node.data)
+                node = node.next

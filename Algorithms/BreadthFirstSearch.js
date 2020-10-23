@@ -1,4 +1,4 @@
-"""
+/*
 - BFS -
 
 Applications:
@@ -23,42 +23,39 @@ Applications:
   heap memory
 - Serialization / Deserialization of a tree like structure (for example when order does matter)
   -> it allows the tree to be reconstructed in an effecient manner
-"""
+*/
 
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.adj_list = []
-        self.visited = False
-        self.predecessor = None
+class Node {
+    constructor(data) {
+        this.data = data
+        this.visited = false
+        this.neighbors = []
+    }
+}
 
+function bfs(startNode) {
+    const queue = [startNode]
+    while (queue.length > 0) {
+        let node = queue.shift()
+        console.log(node.data)
+        for (let n = 0; n < node.neighbors.length; n++) {
+            if (!node.neighbors[n].visited) {
+                node.neighbors[n].visited = true
+                queue.push(node.neighbors[n])
+            }
+        }
+    }
+}
 
+let node1 = new Node('A')
+let node2 = new Node('B')
+let node3 = new Node('C')
+let node4 = new Node('D')
+let node5 = new Node('E')
 
-def bfs(self, start_node):
-    queue = []
-    queue.append(start_node)
-    start_node.visited = True
-    while queue:
-        node = queue.pop(0)
-        print(f'Node data: {node.data}')
-        for item in node.adj_list:
-            if not item.visited:
-                item.visited = True
-                queue.append(item)
+node1.neighbors.push(node2)
+node1.neighbors.push(node3)
+node1.neighbors.push(node4)
+node4.neighbors.push(node5)
 
-
-# Initialize each node and add data
-n1 = Node('A')
-n2 = Node('B')
-n3 = Node('C')
-n4 = Node('D')
-n5 = Node('E')
-
-# Here we create connections between nodes
-n1.adj_list.append(n2)
-n1.adj_list.append(n3)
-n2.adj_list.append(n4)
-n4.adj_list.append(n5)
-
-# Now we access each node
-bfs(n1)
+bfs(node1)

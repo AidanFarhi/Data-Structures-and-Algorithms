@@ -25,12 +25,24 @@ class Node:
 
 
 # Recursive approach
-def dfs(node):
+def dfs_recursive(node):
     node.visited = True
     print(node.data)
     for n in node.neighbors:
         if not n.visited:
-            dfs(n)
+            dfs_recursive(n)
+
+
+# Approach with a stack data structure
+def dfs_stack(start_node):
+    stack = [start_node]
+    while stack:
+        node = stack.pop()
+        print(node.data)
+        for n in node.neighbors:
+            if not n.visited:
+                n.visited = True
+                stack.append(n)
 
 
 node1 = Node('A')
@@ -43,5 +55,3 @@ node1.neighbors.append(node2)
 node1.neighbors.append(node3)
 node2.neighbors.append(node4)
 node4.neighbors.append(node5)
-
-dfs(node1)

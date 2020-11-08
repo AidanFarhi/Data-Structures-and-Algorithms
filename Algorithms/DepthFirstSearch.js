@@ -35,6 +35,20 @@ function dfsRecursive(node) {
     }
 }
 
+function dfsStack(start_node) {
+    const stack = [start_node]
+    while (stack) {
+        let node = stack.pop()
+        console.log(node.data)
+        for (let i = 0; i < node.neighbors.length; i++) {
+            if (!node.neighbors[i].visited) {
+                node.neighbors[i].visited = true
+                stack.push(node.neighbors[i])
+            }
+        }
+    }
+}
+
 let node1 = new Node('A')
 let node2 = new Node('B')
 let node3 = new Node('C')
@@ -45,5 +59,3 @@ node1.neighbors.push(node2)
 node1.neighbors.push(node3)
 node2.neighbors.push(node4)
 node4.neighbors.push(node5)
-
-dfsRecursive(node1)

@@ -45,9 +45,15 @@ class HashTable:
         return None
     
     # This creates an index based on the sum of all
-    # chars of the key's ASCII values
+    # chars of the key's Unicode values
     def hash_function(self, key):
         total = 0
         for ch in key:
             total += ord(ch)
         return total % self.size
+
+ht = HashTable()
+ht.put('hi', 100)
+ht.put('bye', 200)
+print(ht.get('hi'))
+print(ht.get('bye'))

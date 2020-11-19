@@ -84,6 +84,6 @@ node9.adjList.push(node15)
 node15.adjList.push(node16)
 node15.adjList.push(node17)
 
-//Now run our BFS
-//We should see data in ascending order from 100 -> 1700
+// Now run our BFS
+// We should see data in ascending order from 100 -> 1700
 bfs(node1)

@@ -4,8 +4,8 @@
 - Fastest known single-source shortest-path algorithm for arbitrary 
   directed graphs with unbounded non-negative weights.
 
-- Runtime Complexity -
-O(V*logV+E)
+- Runtime Complexity - Memory Complexity -
+      O(V*logV+E)            O(N)
 '''
 
 import sys

@@ -7,11 +7,16 @@ of nodes.
 Prim-Jarnik's is a better algorithm for dense graphs (a lot of vertices)
 and Kruskal's algorithm is better for sparse graphs (low number of vertices).
 
-        - Running Time Complexity -
+- Running Time Complexity -
 Best case: O(E*logE) | Worst Case: O(E*logV)
 
-            - Memory Complexity -
-                    O(E)
+- Memory Complexity -
+        O(E)
+
+Applications:
+- Optimization problems: road/cable/pipe length
+- K-means clustering
+- Routing in LAN
 """
 
 import heapq

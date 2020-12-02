@@ -2,7 +2,7 @@
 Determine the best time to buy and sell a stock
 """
 
-def maxProfit(self, prices: List[int]) -> int:
+def maxProfit(prices) -> int:
         if len(prices) == 0:
             return 0
         minBuy = prices[0]

@@ -32,7 +32,7 @@ def optimized_brute_force_sub_sums(arr):
 # O(N)
 # The approach here is to mathematically count all
 # the occurances of each item of the array. 
-# The formula is: (n – i)i + (n – i) = (n – i)(i + 1)
+# The formula is: (n – i)(i + 1)
 def linear_sub_sums(arr):
     result = 0
     for i in range(len(arr)):

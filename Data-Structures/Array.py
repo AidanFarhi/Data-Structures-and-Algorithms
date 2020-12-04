@@ -161,3 +161,17 @@ class Array:
                     self.delete(i)
                     self.remove(item)
                     break
+    
+    def get_item_at(self, index):
+        if self.size == 0 or index > self.size - 1 or self.size + index < 0:
+            raise IndexError('Index out of range')
+        if index < 0:
+            return self.arr[self.size + index]
+        return self.arr[index]
+
+    def set_item_at(self, index, item):
+        if self.size == 0 or index > self.size - 1 or self.size + index < 0:
+            raise IndexError('Index out of range')
+        if index < 0:
+            self.arr[self.size + index] = item
+        self.arr[index] = item

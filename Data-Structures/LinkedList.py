@@ -22,92 +22,188 @@ Applications:
 - Queues
 
 Operations:
-- insertAtStart(value) O(1)
-- insertAtEnd(value) O(N) * we have to traverse the whole list
-- removeStart() O(1)
-- removeItem(value) O(N)
+is_empty() -> O(1)
+get_size() -> O(1)
+value_at(index) -> O(N)
+push_front(item) -> O(1)
+pop_front() -> O(1)
+push_back(item) -> O(N)
+pop_back() -> O(N)
+peek_front() -> O(1)
+peek_back() -> O(N)
+insert_at() -> O(N)
+erase(index) -> O(N)
+reverse() -> O(N)
+remove_value(item) -> O(N)
+show_list() -> O(N)
 """
 
 
 class Node:
+
     def __init__(self, data):
         self.data = data
-        self.nextNode = None
+        self.next = None
 
 
 class LinkedList:
+
     def __init__(self):
         self.head = None
-        self.numOfNodes = 0
+        self.size = 0
 
-    # this is why we like linked lists: O(1) to insert at start
-    def insert_start(self, data):
-        self.numOfNodes += 1
-        new_node = Node(data)
+    def get_size(self):
+        return self.size
 
-        # if there is no head yet
-        if not self.head:
+    def is_empty(self):
+        return self.size == 0
+
+    def value_at(self, index):
+        if index >= self.size:
+            raise IndexError('Index out of range')
+        if self.head:
+            i = 0
+            node = self.head
+            while i < index:
+                node = node.next
+                i += 1
+            return node.data
+
+    def push_front(self, item):
+        if self.head is not None:
+            new_node = Node(item)
+            new_node.next = self.head
             self.head = new_node
         else:
-            new_node.nextNode = self.head
-            self.head = new_node
+            self.head = Node(item)
+        self.size += 1
 
-    # O(N)
-    def remove(self, data):
-        if self.head is None:
+    def pop_front(self):
+        if self.head is not None:
+            data = self.head.data
+            new_head = self.head.next
+            if new_head is not None:
+                self.head = new_head
+            else:
+                self.head = None
+            self.size -= 1
+            return data
+
+    def push_back(self, item):
+        if self.head is not None:
+            new_node = Node(item)
+            node = self.head
+            while node.next:
+                node = node.next
+            node.next = new_node
+            self.size += 1
+        else:
+            self.head = Node(item)
+            self.size += 1
+
+    def pop_back(self):
+        if self.head is not None:
+            node = self.head
+            prev = None
+            while node.next:
+                prev = node
+                node = node.next
+            if prev is not None:
+                prev.next = None
+            else:
+                self.head = None
+            self.size -= 1
+
+    def peek_front(self):
+        return self.head.data
+
+    def peek_back(self):
+        if self.head:
+            node = self.head
+            while node.next is not None:
+                node = node.next
+            return node.data
+
+    def insert_at(self, index, item):
+        if index > self.size:
+            raise IndexError('Index out of range')
+        if index == self.size:
+            self.push_back(item)
             return
+        if self.head:
+            new_node = Node(item)
+            i = 0
+            node = self.head
+            prev = None
+            while i < index:
+                prev = node
+                node = node.next
+                i += 1
+            if prev is not None:
+                prev.next = new_node
+                new_node.next = node
+            else:
+                new_node.next = self.head
+                self.head = new_node
+            self.size += 1
 
-        access_node = self.head
-        previous_node = None
-
-        while access_node is not None and access_node.data != data:
-            previous_node = access_node
-            access_node = access_node.nextNode
-
-        # data does not exist - end of list reached
-        if access_node is None:
+    def erase(self, index):
+        if index > self.size:
+            raise IndexError('Index out of range')
+        if index == 0:
+            self.pop_front()
             return
-        
-        self.numOfNodes -= 1
-        # if data found, this his how we remove - set prev node reference to access_node.nextNode
-        if previous_node is None:
-            self.head = access_node.nextNode
-        else:
-            previous_node.nextNode = access_node.nextNode
+        if self.head:
+            i = 0
+            node = self.head
+            prev = None
+            while i < index:
+                prev = node
+                node = node.next
+                i += 1
+            if prev is not None:
+                prev.next = node.next
+            else:
+                self.head = None
+            self.size -= 1
 
-    # O(N)
-    def insert_end(self, data):
-        self.numOfNodes += 1
-        new_node = Node(data)
-        access_node = self.head
-
-        if not self.head:
-            self.head = new_node
-        else:
-            while access_node.nextNode is not None:
-                access_node = access_node.nextNode
-
-            access_node.nextNode = new_node
-
-    # O(N)
-    def size_of_list(self):
-        return self.numOfNodes
-
-    # O(N)
-    def print_data(self):
-        access_node = self.head
-
-        while access_node is not None:
-            print(access_node.data)
-            access_node = access_node.nextNode
-    
-    # O(N)
     def reverse(self):
-        n = self.head
-        p = None
-        while n:
-            next_n = n.next
-            n.next = p
-            p = n
-            n = next_n
-        self.head = p
+        if self.head and self.head.next is not None:
+            node = self.head
+            prev = None
+            while node:
+                next_node = node.next
+                node.next = prev
+                prev = node
+                node = next_node
+            self.head = prev
+
+    def remove_value(self, item):
+        if self.head:
+            node = self.head
+            prev = None
+            while node:
+                if node.data == item:
+                    if prev is not None:
+                        prev.next = node.next
+                        self.size -= 1
+                        return
+                    else:
+                        if self.head.next is not None:
+                            self.head = self.head.next
+                        else:
+                            self.head = None
+                        self.size -= 1
+                prev = node
+                node = node.next
+
+    def show_list(self):
+        if self.head:
+            display = []
+            node = self.head
+            while node:
+                display.append(node.data)
+                node = node.next
+            return display
+        else:
+            return []

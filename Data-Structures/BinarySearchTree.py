@@ -21,153 +21,185 @@ Delete      O(log N)         O(N)
 Search      O(log N)         O(N)
 
 Operations
-- insert()
-- search()
-- delete()
-- in_order_traversal() - recursive - left subtree, root node, right subtree
-- pre_order_traversal() - recursive - root, left subtree, right subtree
-- post_order_traversal() - recursive - left subtree, right subtree, root
+- insert(value)
+- delete_value(value)
+- get_node_count()
+- is_in_tree(value)
+- show_values_in_order() -> prints an array representation of values in-order.
+- get_min()
+- get_max()
+- get_height()
+
 """
 
 
 class Node:
-    def __init__(self, data, parent):
+
+    def __init__(self, data, parent=None):
         self.data = data
+        self.parent = parent
         self.left = None
         self.right = None
-        self.parent = parent
+        self.count = 1
 
 
 class BST:
+
     def __init__(self):
         self.root = None
+        self.node_count = 0
 
     def insert(self, data):
-        if self.root is None:
-            self.root = Node(data, None)
+        if self.root:
+            self.__insert_helper(self.root, data)
         else:
-            self.insert_helper(self.root, data)
+            self.root = Node(data)
+        self.node_count += 1
 
-    def insert_helper(self, node, data):
+    def __insert_helper(self, node, data):
         if node.data > data:
-            if node.left is not None:
-                self.insert_helper(node.left, data)
+            if node.left:
+                self.__insert_helper(node.left, data)
             else:
                 node.left = Node(data, node)
-        else:
-            if node.right is not None:
-                self.insert_helper(node.right, data)
+        elif node.data < data:
+            if node.right:
+                self.__insert_helper(node.right, data)
             else:
                 node.right = Node(data, node)
+        else:  # duplicate value
+            node.count += 1
 
-    def remove(self, data):
-        if self.root is None:
-            return
-        elif self.root.left is None and self.root.right is None and self.root.data == data:
-            self.root = None
+    def get_node_count(self):
+        return self.node_count
+
+    def show_values_in_order(self):
+        if self.root:
+            arr = []
+            self.__show_values_helper(self.root, arr)
+            print(arr)
         else:
-            self.remove_helper(self.root, data)
+            print('Tree is empty')
 
-    def remove_helper(self, node, data):
+    def __show_values_helper(self, node, arr):
+        if node.left:
+            self.__show_values_helper(node.left, arr)
+        for n in range(node.count):
+            arr.append(node.data)
+        if node.right:
+            self.__show_values_helper(node.right, arr)
+
+    def is_in_tree(self, data):
+        if self.root:
+            return self.__is_in_tree_helper(self.root, data)
+        return False
+
+    def __is_in_tree_helper(self, node, data):
+        if node is None:
+            return False
+        elif node.data > data:
+            return self.__is_in_tree_helper(node.left, data)
+        elif node.data < data:
+            return self.__is_in_tree_helper(node.right, data)
+        else:
+            return True
+
+    def get_min(self):
+        if self.root:
+            return self.__get_min_helper(self.root)
+        return None
+
+    def __get_min_helper(self, node):
+        if node.left:
+            return self.__get_min_helper(node.left)
+        return node.data
+
+    def get_max(self):
+        if self.root:
+            return self.__get_max_helper(self.root)
+        return None
+
+    def __get_max_helper(self, node):
+        if node.right:
+            return self.__get_max_helper(node.right)
+        return node.data
+
+    def get_height(self):
+        if self.root:
+            return self.__get_height_helper(self.root)
+        return 0
+
+    def __get_height_helper(self, node):
+        if node is None:
+            return -1
+        return 1 + max(self.__get_height_helper(node.left), self.__get_height_helper(node.right))
+
+    def delete_value(self, value):
+        if self.root:
+            self.__delete_value_helper(self.root, value)
+            self.node_count -= 1
+
+    def __delete_value_helper(self, node, value):
         if node is None:
             return
-        elif node.data > data:
-            self.remove_helper(node.left, data)
-        elif node.data < data:
-            self.remove_helper(node.right, data)
-        else:
-            if node.left is None and node.right is None:  # Node has no children
-                if node.parent.left == node:
-                    node.parent.left = None
-                    del node
+        elif node.data > value:
+            if node.left:
+                self.__delete_value_helper(node.left, value)
+        elif node.data < value:
+            if node.right:
+                self.__delete_value_helper(node.right, value)
+        else:  # We have found the node containing the value.
+            parent = node.parent
+            if node.left is None and node.right is None:
+                if parent is not None:
+                    if parent.right == node:
+                        parent.right = None
+                    else:
+                        parent.left = None
                 else:
-                    node.parent.right = None
-                    del node
-            elif node.left is None and node.right is not None:  # Node has one right child
-                if node.parent.left == node:  # Current node is a left child
-                    node.parent.left = node.right
-                    node.right.parent = node.parent
-                    del node
-                else:  # current node is a right child
-                    node.parent.right = node.right
-                    node.right.parent = node.parent
-                    del node
-            elif node.left is not None and node.right is None:  # Node has one left child
-                if node.parent.left == node:  # Current node is a left child
-                    node.parent.left = node.left
-                    node.left.parent = node.parent
-                    del node
-                else:  # Current node is a right child
-                    node.parent.right = node.left
-                    node.left.parent = node.parent
-                    del node
-            else:  # Node has two children
-                # predecessor will be the largest node in the left sub-tree of Node to delete
-                predecessor = self.get_predecessor(node.left)
+                    self.root = None
+            elif node.left is None and node.right is not None:
+                if parent is not None:
+                    if parent.right == node:
+                        parent.right = node.right
+                        node.right.parent = parent
+                    else:
+                        parent.left = node.right
+                        node.right.parent = parent
+                else:
+                    self.root = node.right
+                    node.right.parent = None
+            elif node.left is not None and node.right is None:
+                if parent is not None:
+                    if parent.right == node:
+                        parent.right = node.left
+                        node.left.parent = parent
+                    else:
+                        parent.left = node.left
+                        node.left.parent = parent
+                else:
+                    self.root = node.left
+                    node.left.parent = None
+            else:
+                predecessor = self.__get_predecessor(node.left)
                 temp = predecessor.data
                 predecessor.data = node.data
                 node.data = temp
-                self.remove_helper(predecessor, data)
+                self.__delete_value_helper(predecessor, value)
 
-    def get_predecessor(self, node):
+    def __get_predecessor(self, node):
         if node.right:
-            return self.get_predecessor(node.right)
+            return self.__get_predecessor(node.right)
         return node
 
-    def traverse(self):
-        if self.root is not None:
-            self.traverse_in_order(self.root)
+#       - TESTS -
+# bst = BST()
+# test = [-13, 54, 33, 767, 252, -666, 3, -76, 2333]
+# for i in range(30):
+#     bst.insert(random.randint(-100, 100))
+# for num in test:
+#     bst.insert(num)
 
-    # left subtree, root node, right subtree
-    def traverse_in_order(self, node):
-        if node.left:
-            self.traverse_in_order(node.left)
-        print('%s' % node.data)
-        if node.right:
-            self.traverse_in_order(node.right)
-
-    def get_max(self):
-        if self.root is None:
-            return
-        elif self.root.right is None:
-            return self.root.data
-        else:
-            return self.get_max_helper(self.root)
-
-    def get_max_helper(self, node):
-        if node.right is None:
-            return node.data
-        else:
-            return self.get_max_helper(node.right)
-
-    def get_min(self):
-        if self.root is None:
-            return
-        elif self.root.left is None:
-            return self.root.data
-        else:
-            return self.get_min_helper(self.root)
-
-    def get_min_helper(self, node):
-        if node.left is None:
-            return node.data
-        else:
-            return self.get_min_helper(node.left)
-
-    def has_value(self, value):
-        if self.root is None:
-            return False
-        elif self.root.data == value:
-            return True
-        else:
-            return self.has_value_helper(self.root, value)
-
-    def has_value_helper(self, node, value):
-        if node.data == value:
-            return True
-        elif node.data > value and node.left is not None:
-            return self.has_value_helper(node.left, value)
-        elif node.data < value and node.right is not None:
-            return self.has_value_helper(node.right, value)
-        else:
-            return False
+# bst.show_values_in_order()
+# bst.delete_value(-13)
+# bst.show_values_in_order()

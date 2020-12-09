@@ -1,12 +1,6 @@
 """
 - LRU Cache -
 
-Question: Implement an LRU Cache.
-It is a cache replacement policy that says to evict the least recently used item in the cache.
-Every time an item is used it goes to the "front" of the cache since it has been used and has priority.
-Items that are not used will go to the "end" of the cache eventually and get evicted since they are the least used items, 
-they never got a bump up by being used.
-
 What is a Cache?
 
 A cache is a hardware or software component that stores data so that future requests for that data can be served faster; 

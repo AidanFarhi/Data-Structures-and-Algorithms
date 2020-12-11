@@ -1,3 +1,5 @@
+package Algorithms;
+
 public class DFS {
 	
 	public class Node {

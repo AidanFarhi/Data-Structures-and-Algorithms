@@ -15,7 +15,7 @@ public class ArrayStringStack {
 
     public void push(String item) {
         if (N == capacity) {
-            resize();
+            resize(capacity * 2);
         }
         stack[N++] = item;
     }
@@ -24,8 +24,12 @@ public class ArrayStringStack {
         if (N == 0) {
             return "Empty";
         } else {
+
             String item = stack[--N];
             stack[N] = null;
+            if (N > 0 && N == capacity / 4) {
+                resize(capacity / 2);
+            }
             return item;
         }
     }
@@ -38,8 +42,8 @@ public class ArrayStringStack {
         return result;
     }
 
-    private void resize() {
-        String[] copy = new String[capacity * 2];
+    private void resize(int newCapacity) {
+        String[] copy = new String[newCapacity];
         for (int i = 0; i < N; i++) {
             copy[i] = stack[i];
         }

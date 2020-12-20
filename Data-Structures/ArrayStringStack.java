@@ -13,6 +13,7 @@ public class ArrayStringStack {
         N = 0;
     }
 
+    // Double array size when array is full
     public void push(String item) {
         if (N == capacity) {
             resize(capacity * 2);
@@ -20,6 +21,7 @@ public class ArrayStringStack {
         stack[N++] = item;
     }
 
+    // Halve array size when array is 1/4 full
     public String pop() {
         if (N == 0) {
             return "Empty";

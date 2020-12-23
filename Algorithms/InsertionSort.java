@@ -3,7 +3,20 @@ package Algorithms;
 import java.util.Arrays;
 
 public class InsertionSort {
-    
+    /*
+    - Insertion Sort -
+    | Running Time |
+        O(N^2)
+
+    - Efficient on smaller data sets 10-20 items
+    - More efficient than Bubble Sort and Selection Sort
+    - Speeds up when array is already partially sorted
+    - Stable Algorithm (preserves original order of elements)
+    - In place algorithm
+    - In general, insertion sort will write to an array O(N^2) times,
+      while selection sort will only write O(N) times. (selection better for flash memory)
+    */
+
     public static void sort(Comparable[] arr) {
         int n = arr.length;
         for (int i = 0; i < n; i++) {

@@ -1,3 +1,5 @@
+package DataStructures.AssociativeArrays;
+
 import java.util.Arrays;
 
 /*

@@ -1,3 +1,5 @@
+package DataStructures.AssociativeArrays;
+
 public class StringHashTable {
 	
 	private String[] keys;

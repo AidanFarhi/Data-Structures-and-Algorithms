@@ -19,25 +19,17 @@ public class LinkedStringStack {
 	private int size;
 	
 	private class Node {
-		
 		String value;
 		Node next;
-		
 	}
-	
+
 	public void push(String item) {
-		if (head == null) {
-			head = new Node();
-			head.value = item;
-			head.next = null;
-		} else {
-			Node oldHead = head;
-			head = new Node();
-			head.next = oldHead;
-			head.value = item;
-		}
+        Node oldhead = head;
+        head = new Node();
+        head.value = item;
+		head.next = oldhead;
 		size++;
-	}
+    }
 	
 	public String pop() {
 		if (head != null) {

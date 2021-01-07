@@ -69,12 +69,6 @@ public class DynamicArray<Item> {
 
     /* Test Client */
     public static void main(String[] args) {
-        DynamicArray<Integer> array = new DynamicArray<>();
-        array.push(10);
-        array.push(8);
-        array.push(90);
-        System.out.println(array.pop());
-        System.out.println(array.itemAt(0));
-        System.out.println(array.itemAt(1));
+        
     }
 }

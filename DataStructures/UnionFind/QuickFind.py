@@ -1,34 +1,48 @@
 import os
 
+"""
+- QuickFind Disjointed Set -
+
+Running Times
+-------------
+connected(x, y) -> O(1)
+union(x, y) -> O(N)
+"""
+
+
 class QuickFind:
-    # Constructor
-    def __init__(self, size):
-        """
-        Maintain an array of size N.
-        Array entry == root
-        Index == object id
-        """
-        self.roots = list(range(0, size))
-    
-    # O(1)
-    def connected(self, p, q):
-        return self.roots[p] == self.roots[q]
-    
-    # Set all entries with roots[q] to == roots[p]
-    # O(N)
-    def union(self, p, q):
-        if not self.connected(p, q):
-            p_root = self.roots[p]
-            q_root = self.roots[q]
-            for i, r in enumerate(self.roots):
-                if r == q_root:
-                    self.roots[i] = p_root
+
+    # Constructor - Takes in amount of items as an argument
+    def __init__(self, items):
+        # Maintain a list of roots for every item.
+        self.roots = list(range(0, items))  # Each item is initialized as its own root.
+
+    def connected(self, x, y):
+        self.__check_input(x, y)
+        return self.roots[x] == self.roots[y]
+
+    def union(self, x, y):
+        self.__check_input(x, y)
+        # Get roots
+        x_root = self.roots[x]
+        y_root = self.roots[y]
+        for i, root in enumerate(self.roots):  # Make all y_roots == x_root
+            if root == y_root:
+                self.roots[i] = x_root
+
+    def show_roots(self):
+        print(self.roots)
+
+    # Throws Exception if arguments are out of range
+    def __check_input(self, x, y):
+        if x < 0 or x >= len(self.roots) or y < 0 or y >= len(self.roots):
+            raise Exception("Item not in set.")
     
 
 # Test section
 def main():
     test_file = open(os.getcwd() + '/Tests/UF10.txt', 'r')
-    qf = QuickFind(int(test_file.readline()))
+    qf = QuickFind(int(test_file.readline())) # Creates a QF object of size 10
     pair = test_file.readline()
     while pair:
         p = int(pair[0])
@@ -39,5 +53,6 @@ def main():
             qf.union(p, q)
             print(f'[{p}, {q}] now connected..')
         pair = test_file.readline()
+    qf.show_roots()
 
 main()

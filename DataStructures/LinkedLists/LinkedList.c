@@ -24,7 +24,7 @@ void show_items();
 /* Test Client */
 int main(void)
 {
-    // Add some nodes to front
+    // Add and remove some nodes
     add_front(100);
     add_front(200);
     add_front(300);
@@ -32,6 +32,7 @@ int main(void)
     add_back(500);
     remove_front();
     remove_end();
+    // Search for some nodes
     printf("200 in list: %s\n", search(200) ? "true" : "false");
     printf("600 in list: %s\n", search(600) ? "true" : "false");
     // Print the nodes

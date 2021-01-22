@@ -1,5 +1,4 @@
 package DataStructures.StacksAndQueues;
-
 import java.util.Arrays;
 
 /**
@@ -16,7 +15,7 @@ class ArrayQueue<Item> {
         if (size == capacity) { resize(capacity * 2); }
         size++;
         queue[tail++] = item;
-        if (tail == capacity) { tail = 0; }
+        if (tail == capacity) { tail = 0; } // Wrap around once tail reaches end of array
     }
 
     public Item dequeue() {
@@ -25,11 +24,12 @@ class ArrayQueue<Item> {
         queue[head - 1] = null; // Avoid loitering
         size--;
         if (size > 0 && size == capacity / 4) { resize(capacity / 2); }
-        if (head == capacity) { head = 0; }
+        if (head == capacity) { head = 0; } // Wrap around once head reaches end of array
         return item;
     }
 
     private void resize(int newSize) {
+        // Copy items from old array to new array
         Item[] copy = (Item[]) new Object[newSize];
         int count = 0;
         while (count < size) {
@@ -41,12 +41,16 @@ class ArrayQueue<Item> {
             }
             count++;
         }
+        // Reset pointers and capacity
         capacity = newSize;
         head = 0;
         tail = size;
         queue = copy;
     }
 
+    /**
+     * Prints the underlying array to console
+     */
     public void showQueue() {
         System.out.println(Arrays.toString(queue));
     }

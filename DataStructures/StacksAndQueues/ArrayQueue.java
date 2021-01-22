@@ -11,6 +11,10 @@ class ArrayQueue<Item> {
     private int head, tail, size = 0;
     private int capacity = 2;
 
+    /**
+     * Add an item to the Queue
+     * @param item
+     */
     public void enqueue(Item item) {
         if (size == capacity) { resize(capacity * 2); }
         size++;
@@ -18,6 +22,10 @@ class ArrayQueue<Item> {
         if (tail == capacity) { tail = 0; } // Wrap around once tail reaches end of array
     }
 
+    /**
+     * Remove the next Item from the Queue
+     * @return Item
+     */
     public Item dequeue() {
         if (size == 0) { return null; }
         Item item = queue[head++];
@@ -28,6 +36,10 @@ class ArrayQueue<Item> {
         return item;
     }
 
+    /**
+     * Resizes underlying array to given newSize
+     * @param newSize
+     */
     private void resize(int newSize) {
         // Copy items from old array to new array
         Item[] copy = (Item[]) new Object[newSize];

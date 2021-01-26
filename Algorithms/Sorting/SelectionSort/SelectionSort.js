@@ -10,10 +10,14 @@ class SelectionSort {
                     min = j
                 }
             }
-            let temp = arr[i]
-            arr[i] = arr[min]
-            arr[min] = temp
+            SelectionSort.swap(arr, i, min)
         }
+    }
+
+    static swap(arr, i, j) {
+        const temp = arr[i]
+        arr[i] = arr[j]
+        arr[j] = temp
     }
 }
 

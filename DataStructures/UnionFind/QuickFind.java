@@ -58,6 +58,7 @@ public class QuickFind {
         File testFile = new File(System.getProperty("user.dir") + "/Tests/UF10.txt");
         BufferedReader br = new BufferedReader(new FileReader(testFile));
         int size = Integer.parseInt(br.readLine());
+        System.out.println(size);
         QuickFind qf = new QuickFind(size);
         String pair = br.readLine();
         while (pair != null) {

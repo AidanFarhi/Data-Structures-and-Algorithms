@@ -4,7 +4,7 @@ import java.util.Arrays;
 /**
  * A Dynamically resizing Queue
  */
-class ArrayQueue<Item> {
+public class ArrayQueue<Item> {
 
     // Initialize a Queue of size 2, and a pointer to head, tail, and a record of size and capacity
     private Item[] queue = (Item[]) new Object[2];

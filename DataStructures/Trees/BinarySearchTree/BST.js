@@ -73,6 +73,19 @@ class BST {
     getSize() {
         return this.size
     }
+
+    getSortedKeys() {
+        const arr = []
+        this.getSortedKeysHelper(this.root, arr)
+        return arr
+    }
+
+    getSortedKeysHelper(node, arr) {
+        if (node === null) return
+        if (node.left !== null) this.getSortedKeysHelper(node.left, arr)
+        arr.push(node.key)
+        this.getSortedKeysHelper(node.right, arr)
+    }
 }
 
 
@@ -95,8 +108,18 @@ function test() {
     const bst = new BST()
     
     for (let key in data) {
-        console.log(key)
+        bst.put(Number(key), data.key)
     }
+
+    console.log(bst.getSize())
+
+    bst.delete(90)
+    bst.delete(1)
+
+    console.log(bst.getSize())
+
+    console.log(bst.getSortedKeys())
+    console.log(bst.getSortedValues())
 }
 
 
